@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/jpg" href="https://plus.unsplash.com/premium_photo-1675848495392-6b9a3b962df0?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8Y3V0ZSUyMGNhdHxlbnwwfHwwfHx8MA%3D%3D">
+    <title>RCat</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f4f1ea;
+            --cream-dark: #e8e2d6;
+            --accent: #f67280;
+            --accent-light: #f67280;
+            --text: #171717;
+            --white: #ffffff;
+            --glass: rgba(255, 255, 255, 0.75);
+            --shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+       .logo-main span.ai-text {
+            color: #D2D2FA; /* Lavender color */
+            font-style: italic; /* Optional: if you don't want it italic like the REAR part */
+            text-shadow: 0 0 10px rgba(230, 230, 250, 0.5); /* Adds a soft glow effect */
+        }
+
+        /* Fluid Typography & Base */
+        * { box-sizing: border-box; transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1); }
+        html { font-size: 16px; }
+        body {
+            margin: 0; color: var(--text);
+            font-family: 'Inter', sans-serif; overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        h1, h2, .logo { font-family: 'Bodoni Moda', serif; font-weight: 700; }
+
+        /* --- ANIMATIONS --- */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes drift { from { background-position: 0% 50%; } to { background-position: 100% 50%; } }
+        @keyframes shimmer { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+
+        /* --- LOGIN PAGE --- */
+        #login-screen {
+            height: 100vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; 
+            background: linear-gradient(-45deg, #fff, var(--bg), #fff, var(--cream-dark));
+            background-size: 400% 400%; animation: drift 15s infinite alternate;
+            padding: 20px;
+            #login-screen {
+            height: 100vh; 
+            display: flex; 
+           flex-direction: column;
+           justify-content: center; 
+           align-items: center; 
+           /* Add your new background here */
+           background: #CCF9FF;
+           background: radial-gradient(circle, rgba(204, 249, 255, 1) 0%, rgba(124, 232, 255, 1) 25%, rgba(85, 208, 255, 1) 50%, rgba(0, 172, 223, 1) 75%, rgba(0, 128, 191, 1) 100%);
+           padding: 20px;
+          }
+        }
+
+        .brand-header { text-align: center; margin-bottom: 40px; animation: fadeIn 1s ease-out; }
+        #dashboard {
+    display: none; /* Keep this to let your JS handle the toggle */
+    min-height: 100vh;
+    width: 100%;
+    /* Replace the URL below with your desired background image */
+    background: 
+         
+        url('https://uploads.onecompiler.io/44ejma9dg/44fzahqr2/silhouettes-hills-street-lamps-cloudy-sky-beautiful-sunset.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    opacity: 0; /* JS will fade this in */
+    transition: opacity 1s ease-in;
+}
+        .logo-main {
+            font-size: clamp(2.5rem, 10vw, 4.5rem); letter-spacing: 12px; text-transform: uppercase;
+            margin: 0; color: var(--text);
+            font-style: italic;
+        }
+        .logo-main span { color: var(--accent); font-style: italic; text-shadow: 2px 2px 0px rgba(197, 163, 88, 0.1); }
+
+        .login-card {
+            background: var(--glass); backdrop-filter: blur(15px);
+            padding: clamp(30px, 8vw, 60px); border-radius: 4px; border: 1px solid var(--accent);
+            width: 100%; max-width: 450px; box-shadow: var(--shadow);
+            animation: fadeIn 1.2s ease-out;
+        }
+
+        input {
+            width: 100%; padding: 15px 0; background: transparent;
+            border: none; border-bottom: 2px solid var(--cream-dark); font-size: 1.2rem;
+            text-align: center; outline: none; letter-spacing: 2px;
+        }
+        input:focus { border-bottom-color: var(--accent); transform: scale(1.02); }
+
+        .btn-enter {
+            margin-top: 40px; width: 100%; padding: 20px;
+            background: var(--text); color: white; border: none;
+            letter-spacing: 4px; text-transform: uppercase; cursor: pointer;
+            font-size: 0.8rem; font-weight: 600;
+            clip-path: polygon(5% 0, 100% 0, 95% 100%, 0% 100%);
+        }
+        .btn-enter:hover { background: var(--accent); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(197, 163, 88, 0.3); }
+        .btn-enter:active { transform: scale(0.95); }
+
+        /* --- DASHBOARD --- */
+        .navbar {
+            padding: 20px clamp(20px, 5vw, 60px); display: flex; justify-content: space-between;
+            align-items: center; background: var(--white); border-bottom: 1px solid var(--cream-dark);
+            position: sticky; top: 0; z-index: 100;
+        }
+
+        .registry-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: clamp(20px, 4vw, 40px); padding: clamp(20px, 5vw, 60px);
+            max-width: 1400px; margin: 0 auto;
+        }
+
+        .cat-card {
+            background: var(--white); position: relative; overflow: hidden;
+            aspect-ratio: 4/5; cursor: pointer; border-radius: 8px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+
+        .cat-card img.preview-img {
+            width: 100%; height: 100%; object-fit: cover;
+            filter: grayscale(100%); transition: filter 0.8s, transform 0.8s;
+        }
+
+        .cat-card:hover { transform: translateY(-10px); box-shadow: var(--shadow); }
+        .cat-card:hover img.preview-img { transform: scale(1.1); filter: grayscale(0%); }
+
+        .card-overlay {
+            position: absolute; inset: 0; 
+            background: linear-gradient(to top, rgba(44, 44, 44, 0.9), transparent 60%);
+            display: flex; flex-direction: column; justify-content: flex-end;
+            padding: 25px; color: white; opacity: 0.9;
+        }
+
+        /* --- MODAL --- */
+        #modal {
+            display: none; position: fixed; inset: 0; background: rgba(44, 44, 44, 0.95);
+            z-index: 2000; align-items: center; justify-content: center;
+            padding: clamp(10px, 5vw, 50px); backdrop-filter: blur(10px);
+        }
+
+        .modal-inner { 
+            display: flex; flex-direction: column; background: var(--white); 
+            padding: 0; max-width: 1100px; width: 100%; overflow: hidden;
+            max-height: 90vh; border-radius: 4px;
+        }
+
+        #modal-img-container { width: 100%; height: 350px; overflow: hidden; position: relative; }
+        #modal-img-container img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .modal-info { padding: 30px; display: flex; flex-direction: column; text-align: center; overflow-y: auto; }
+
+        @media (min-width: 900px) {
+            .modal-inner { flex-direction: row; height: 650px; }
+            #modal-img-container { width: 55%; height: 100%; }
+            .modal-info { width: 45%; text-align: left; padding: 60px; }
+        }
+
+        /* --- LOADER --- */
+        #loader {
+            display: none; position: fixed; inset: 0; background: var(--bg);
+            z-index: 5000; flex-direction: column; justify-content: center; align-items: center;
+        }
+        .line-loader { width: 80%; max-width: 300px; height: 2px; background: var(--cream-dark); position: relative; margin-top: 20px; }
+        .line-loader::after {
+            content: ''; position: absolute; left: 0; width: 0%; height: 100%;
+            background: var(--accent); animation: loadFill 2.5s ease-in-out forwards;
+        }
+        @keyframes loadFill { to { width: 100%; } }
+    </style>
+</head>
+<body onclick="playSubtleClick()">
+
+    <div id="loader">
+        <h2 class="logo-main" style="font-size: 2rem; letter-spacing: 5px;">R<span>CAT</span></h2>
+        <p style="letter-spacing: 3px; font-size: 0.7rem; margin-top: 10px;">Loading...</p>
+        <div class="line-loader"></div>
+    </div>
+
+    <section id="login-screen">
+        <div class="brand-header">
+            <h1 class="logo-main">R<span>CAT</span><span class="ai-text">.ai</span></h1>
+            <p style="letter-spacing: 5px; font-size: 0.7rem; opacity: 0.6; margin-top: 15px;">AESTHETIC CAT REARING PORTAL</p>
+            <p style="letter-spacing: 2px; font-size: 0.5rem; opacity: 0.4; font-weight: 600;">Only KANNU section opened</p>
+        </div>
+        
+        <div class="login-card">
+            <span style="font-size: 0.7rem; letter-spacing: 2px; opacity: 0.5; display: block; margin-bottom: 10px;">Log In</span>
+            <div class="input-group">
+                <input type="text" id="userName" placeholder="ENTER YOUR NAME" autocomplete="off">
+            </div>
+            <button class="btn-enter" onclick="enterRegistry()">Enter Archive</button>
+        </div>
+    </section>
+
+    <section id="dashboard">
+        <nav class="navbar">
+            <div class="logo" style="font-size: clamp(1rem, 4vw, 1.5rem); letter-spacing: 2px;">R<span>CAT</span></div>
+            <div id="user-greeting" style="font-size: 0.65rem; letter-spacing: 2px; font-weight: 600;"></div>
+            <div style="cursor:pointer; font-size: 0.65rem; border-bottom: 1px solid; letter-spacing: 1px;" onclick="location.reload()">DEPART</div>
+        </nav>
+
+        <header style="text-align:center; padding: 60px 20px;">
+            <h2 style="font-size: clamp(2rem, 8vw, 3.5rem); color: var(--white); margin: 0;">The Grand Registry</h2>
+            <p style="font-style: underline;color: var(--white); opacity: 0.5; margin-top: 5px;">Made by RUPAK YADAV</p>
+            <p style="font-style: italic; opacity: 0.6; color: var(--white); margin-top: 10px;">Curated Feline Profiles & Caretaker Records</p>
+        </header>
+
+        <div class="registry-grid" id="mainGrid"></div>
+    </section>
+
+    <div id="modal" onclick="this.style.display='none'">
+        <div class="modal-inner" onclick="event.stopPropagation()">
+            <div id="modal-img-container">
+                <img id="userCatImage" src="" alt="Personalized View">
+            </div>
+            <div class="modal-info">
+                <h1 id="catTitle" style="margin: 0; font-size: clamp(1.8rem, 5vw, 2.5rem);"></h1>
+                <p style="letter-spacing: 2px; color: var(--accent); margin: 15px 0 30px 0; font-size: 0.8rem; font-weight: 600;">CARETAKER VERIFIED</p>
+                <p id="descriptionText" style="line-height: 1.8; opacity: 0.8; font-size: 0.95rem;"></p>
+                <button class="btn-enter" onclick="document.getElementById('modal').style.display='none'" style="max-width: 250px; margin-top: 30px;">Close Record</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+       // Soulful Water Drop / Bubble Sound Effect
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+function playSubtleClick() {
+    const now = audioCtx.currentTime;
+    
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    const filter = audioCtx.createBiquadFilter();
+
+    // 1. Setup Filter (Removes harshness, makes it "underwater")
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(1000, now);
+
+    // 2. The "Bloop" Pitch Slide
+    // Starting low and sliding up creates the bubble effect
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(200, now); 
+    osc.frequency.exponentialRampToValueAtTime(600, now + 0.08);
+
+    // 3. Soulful Volume Envelope
+    gain.gain.setValueAtTime(0, now);
+    gain.gain.linearRampToValueAtTime(0.1, now + 0.01); // Quick attack
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3); // Long, pleasant fade
+
+    // Connections
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    // Start and Stop
+    osc.start(now);
+    osc.stop(now + 0.3);
+}
+
+        const cats = [
+            { name: "Indian Billi", img: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=800&q=80" },
+            { name: "Bengal Cat", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAqCv57D_ZqyGtsQibmDR86NLfOG7DC79eXa-ntcudkNdeg9-SqkbnsfkMpcLf-LSl-aWGzPsA5sSzCObqrnAEiUbZU1mMKqV_CsFEq8zLhA&s=10" },
+            { name: "Bombay Cat", img: "data:image/webp;base64,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" },
+            { name: "Himalayan Cat", img: "https://images.unsplash.com/photo-1533738363-b7f9aef128ce?auto=format&fit=crop&w=800&q=80" },
+            { name: "Persian Cat", img: "https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?auto=format&fit=crop&w=800&q=80" },
+            { name: "Special Billa", img: "https://uploads.onecompiler.io/44ejma9dg/44fzahqr2/Gemini_Generated_Image_h4q5uxh4q5uxh4q5.png" },
+            { name: "Royal Bengal Tiger", img: "https://images.unsplash.com/photo-1508817628294-5a453fa0b8fb?auto=format&fit=crop&w=800&q=80" },
+            { name: "Asiatic Lion", img: "https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80" },
+            { name: "Snow Leopard", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvrJaw1xpTeHALJjnKLiIgZSzfKKmtEMBzo9Y4VcuL10j3fm8UNMgBPAEpGncaryIDsi-rFGiHNsngF5MVtFGPRgBy-iZEgR2A8LnVPI4e&s=10" },
+            { name: "Fishing Cat", img: "https://images.unsplash.com/photo-1548247416-ec66f4900b2e?auto=format&fit=crop&w=800&q=80" }
+        ];
+
+        const personalImageRegistry = {
+            "kannu": ["https://uploads.onecompiler.io/44ejma9dg/44fzahqr2/Gemini_Generated_Image_bpcz7obpcz7obpcz.png", "https://uploads.onecompiler.io/44ejma9dg/44fzahqr2/Gemini_Generated_Image_f5e4sif5e4sif5e4.png", "https://uploads.onecompiler.io/44ejma9dg/44fzahqr2/Gemini_Generated_Image_mn6prjmn6prjmn6p.png", "https://uploads.onecompiler.io/44ejma9dg/44fzahqr2/Gemini_Generated_Image_v92wixv92wixv92w.png", "https://uploads.onecompiler.io/44ejma9dg/44fzahqr2/Gemini_Generated_Image_i2zcfti2zcfti2zc.png", "https://uploads.onecompiler.io/44ejma9dg/44fzahqr2/Gemini_Generated_Image_88fzhr88fzhr88fz.png", "https://uploads.onecompiler.io/44ejma9dg/44fzahqr2/Gemini_Generated_Image_1seq5l1seq5l1seq.png", "https://uploads.onecompiler.io/44ejma9dg/44fzahqr2/Gemini_Generated_Image_l7e9abl7e9abl7e9.png", "https://uploads.onecompiler.io/44ejma9dg/44fzahqr2/Gemini_Generated_Image_rjw869rjw869rjw8.png", "https://uploads.onecompiler.io/44ejma9dg/44fzahqr2/Gemini_Generated_Image_kkwz3wkkwz3wkkwz.png"],
+            "pushpak": ["LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE"],
+            "rupak": ["LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE"],
+            "lakshita": ["LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE"],
+            "shlenta": ["LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE"],
+            "reena": ["LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE"],
+            "yogendra": ["LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE"],
+            "dharmendra": ["LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE"],
+            "udit": ["LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE", "LINK_HERE"]
+        };
+
+        const users = {
+            "kannu": "kannu", "kanu": "kannu", "kanupriya": "kannu", "kanupriya yadav": "kannu",
+            "pushpak": "pushpak", "pushpak yadav": "pushpak", "prince": "pushpak", "prince yadav": "pushpak",
+            "rupak": "rupak", "rupak yadav": "rupak", "rupesh": "rupak", "rupesh yadav": "rupak", "achha": "rupak",
+            "lakshita": "lakshita", "lakshita yadav": "lakshita", "lucky": "lakshita", "lucky yadav": "lakshita",
+            "shlenta": "shlenta", "shlenta yadav": "shlenta", "shlenta kumari": "shlenta", "shlenta devi": "shlenta", "snehlata yadav": "shlenta", "snehlata": "shlenta",
+            "reena": "reena", "reena yadav": "reena", "reena kumari": "reena",
+            "yogendra": "yogendra", "yogendra yadav": "yogendra", "yogendra singh yadav": "yogendra", "yogendra kumar": "yogendra",
+            "dharmendra": "dharmendra", "dharmendra yadav": "dharmendra", "dharmender": "dharmendra",
+            "udit": "udit", "ud": "udit", "udit yadav": "udit", "rao udit": "udit", "rao udit yadav": "udit"
+        };
+
+        let currentId = "";
+
+        function enterRegistry() {
+            const input = document.getElementById('userName').value.toLowerCase().trim();
+            if (users[input]) {
+                currentId = users[input];
+                document.getElementById('loader').style.display = 'flex';
+                setTimeout(() => {
+                    document.getElementById('loader').style.display = 'none';
+                    document.getElementById('login-screen').style.display = 'none';
+                    document.getElementById('dashboard').style.display = 'block';
+                    setTimeout(() => document.getElementById('dashboard').style.opacity = '1', 100);
+                    document.getElementById('user-greeting').innerText = `WELCOME, ${input.toUpperCase()}`;
+                    buildGrid();
+                }, 2500);
+            } else { alert("ACCESS DENIED"); }
+        }
+
+        function buildGrid() {
+            const grid = document.getElementById('mainGrid');
+            grid.innerHTML = "";
+            cats.forEach((cat, i) => {
+                const card = document.createElement('div');
+                card.className = 'cat-card';
+                card.innerHTML = `
+                    <img src="${cat.img}" class="preview-img" alt="${cat.name}">
+                    <div class="card-overlay">
+                        <span style="font-size:0.6rem; letter-spacing:2px; font-weight:700;">NO. ${i+1}</span>
+                        <h3 style="margin:5px 0 0 0; font-family:'Bodoni Moda'">${cat.name}</h3>
+                    </div>
+                `;
+                card.onclick = () => openRecord(cat.name, i);
+                grid.appendChild(card);
+            });
+        }
+
+        function openRecord(name, index) {
+            document.getElementById('catTitle').innerText = name;
+            document.getElementById('descriptionText').innerText = `Displaying the unique registry connection for ${currentId.toUpperCase()}. You can Buy this Cat at only 33 $ . This digital record confirms the status of the caretaker within the RCat Staff. All rearing protocols are currently active.`;
+            
+            const userImages = personalImageRegistry[currentId];
+            document.getElementById('userCatImage').src = userImages[index];
+            
+            document.getElementById('modal').style.display = 'flex';
+        }
+    </script>
+</body>
+</html>
